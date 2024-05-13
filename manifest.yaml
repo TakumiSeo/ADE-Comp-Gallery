@@ -1,0 +1,23 @@
+name: Simulator Env
+version: 1.0.0
+summary: Simulator environment for testing
+description: Simulator environment for testing
+runner: Bicep
+templatePath: main.bicep
+
+parameters:
+  - id: vnetAddressPrefix
+    name: VnetAddressPrefix
+    description: 'Vnet address prefix'
+    type: string
+    default: '10.0.0.0/16'
+  - id: subnetAddressPrefix
+    name: SubnetAddressPref
+    description: 'Subnet address prefix'
+    type: string
+    default: '10.0.0.0/24'
+  - id: imageVersion
+    name: ImageVersion
+    description: 'Image version'
+    type: string
+    default: '3.0.0'
