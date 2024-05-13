@@ -1,25 +1,25 @@
-@description('The location of the resources.')
-param location string
+@description('the location of the deployment')
+param location string = resourceGroup().location
 
 @description('VM version')
-param imageVersion string
+param imageVersion string = '3.0.0'
 
-@description('The vnet address range')
-param vnetAddressPrefix string
+@description('the addressprefix of the virtual network')
+param vnetAddressPrefix string = '10.0.0.0/16'
 
-@description('The default subnet address range')
-param subnetAddressPrefix string 
+@description('the subnet prefix of the virtual network')
+param subnetAddressPrefix string = '10.0.0.0/24'
+
 
 @description('The size of the VM')
-param virtualMachineSize string = 'Standard_D2s_v3'
+param virtualMachineSize string = 'Standard_B2als_v2'
 
 
 var virtualNetworkName = 'vnet-compga-test'
 var networkSecurityGroupName = 'nsg-compga-test'
-var vnetDefaultSubnetName = 'simpulator'
+var vnetDefaultSubnetName = 'simulator'
 var networkInterfaceName1 = 'nic-compga-test'
 var publicIpAddressName1 = 'pip-compga-test'
-var virtualMachine1Zone = '1'
 var osDiskType = 'Standard_LRS'
 var virtualMachineName1 = 'vm-compga-test'
 
@@ -84,12 +84,12 @@ resource networkInterface1 'Microsoft.Network/networkInterfaces@2022-11-01' = {
         name: 'ipconfig1'
         properties: {
           subnet: {
-            id: vnetDefaultSubnetName
+            id: virtualNetwork::defaultSubnet.id
           }
           privateIPAllocationMethod: 'Static'
-          privateIPAddress: '10.0.1.4'
+          privateIPAddress: '10.0.0.4'
           publicIPAddress: {
-            id: resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', publicIpAddressName1)
+            id: publicIPAddress1.id
           }
         }
       }
@@ -98,9 +98,6 @@ resource networkInterface1 'Microsoft.Network/networkInterfaces@2022-11-01' = {
       id: networkSecurityGroup.id
     }
   }
-  dependsOn: [
-    publicIPAddress1
-  ]
 }
 
 resource publicIPAddress1 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
@@ -114,9 +111,6 @@ resource publicIPAddress1 'Microsoft.Network/publicIPAddresses@2023-09-01' = {
     publicIPAddressVersion: 'IPv4'
     idleTimeoutInMinutes: 4
   }
-  zones: [
-    virtualMachine1Zone
-  ]
 }
 
 resource virtualMachine1 'Microsoft.Compute/virtualMachines@2024-03-01' = {
@@ -134,10 +128,7 @@ resource virtualMachine1 'Microsoft.Compute/virtualMachines@2024-03-01' = {
         }
       }
       imageReference: {
-        id: resourceId(
-          '/subscriptions/19bbdbd5-8d14-4501-9ef0-cc543254ddde/resourceGroups/rg-compga/providers/Microsoft.Compute/galleries/cga-test/images/def01-s-win-gen1/versions',
-          imageVersion
-        )
+        id:'/subscriptions/19bbdbd5-8d14-4501-9ef0-cc543254ddde/resourceGroups/rg-comga/providers/Microsoft.Compute/galleries/cgtest/images/def01-s-win-gen1/versions/${imageVersion}'
       }
     }
     networkProfile: {
@@ -156,7 +147,4 @@ resource virtualMachine1 'Microsoft.Compute/virtualMachines@2024-03-01' = {
       }
     }
   }
-  zones: [
-    virtualMachine1Zone
-  ]
 }
