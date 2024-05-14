@@ -20,4 +20,4 @@ parameters:
     name: ImageVersion
     description: 'Image version'
     type: string
-    default: '3.0.0'
+    default: '333.0.0'

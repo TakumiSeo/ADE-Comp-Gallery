@@ -2,7 +2,7 @@
 param location string = resourceGroup().location
 
 @description('VM version')
-param imageVersion string = '3.0.0'
+param imageVersion string = '333.0.0'
 
 @description('the addressprefix of the virtual network')
 param vnetAddressPrefix string = '10.0.0.0/16'
