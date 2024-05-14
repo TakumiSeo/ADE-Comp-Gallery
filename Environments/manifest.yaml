@@ -2,8 +2,8 @@ name: SimulatorEnv
 version: 1.0.0
 summary: Simulator environment for testing
 description: Simulator environment for testing
-runner: Bicep
-templatePath: main.bicep
+runner: ARM
+templatePath: main.json
 
 parameters:
   - id: vnetAddressPrefix
